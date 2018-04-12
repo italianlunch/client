@@ -16,6 +16,7 @@
         "interface-name": false,
         "member-access": false,
         "no-console": false,
+        "no-submodule-imports": false,
         "no-var-requires": false,
         "object-literal-sort-keys": [false],
         "variable-name": false
