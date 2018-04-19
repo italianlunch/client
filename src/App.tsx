@@ -3,26 +3,34 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import {
-    validateTransactionDestination,
-    ValidateTransactionDestination,
+    sendTransaction,
+    SendTransaction,
+    validateReceiverAccount,
+    ValidateReceiverAccount,
+    validateSenderAccount,
+    ValidateSenderAccount,
 } from './redux/actions';
 import { ReduxState } from './redux/rootReducer';
 
 interface OwnState {
     form: {
-        sourcePrivateKey: string;
-        destinationPublicKey: string;
+        senderPrivateKey: string;
+        receiverPublicKey: string;
         amount: string;
     };
     message: string;
 }
 
 interface ReduxStateProps {
-    validateDestinationPublicKey: any;
+    isSenderAccountValid: any;
+    isReceiverAccountValid: any;
+    sendTransactionStatus: any;
 }
 
 interface ReduxDispatchProps {
-    validateTransactionDestination: ValidateTransactionDestination;
+    validateSenderAccount: ValidateSenderAccount;
+    validateReceiverAccount: ValidateReceiverAccount;
+    sendTransaction: SendTransaction;
 }
 
 type AllProps = ReduxStateProps & ReduxDispatchProps;
@@ -33,8 +41,8 @@ class App extends React.Component<AllProps, OwnState> {
 
         this.state = {
             form: {
-                sourcePrivateKey: '',
-                destinationPublicKey: '',
+                senderPrivateKey: '',
+                receiverPublicKey: '',
                 amount: '',
             },
             message: '',
@@ -56,33 +64,51 @@ class App extends React.Component<AllProps, OwnState> {
                 <div>
                     <h1>Send ur lumens</h1>
                     <input
-                        value={this.state.form.sourcePrivateKey}
-                        placeholder={'Source key'}
-                        onChange={this.setFormField('sourcePrivateKey')}
+                        value={this.state.form.senderPrivateKey}
+                        placeholder={'Your Private Key'}
+                        onChange={this.setFormField('senderPrivateKey')}
+                        onBlur={() =>
+                            this.state.form.senderPrivateKey &&
+                            this.props.validateSenderAccount(
+                                this.state.form.senderPrivateKey
+                            )
+                        }
                     />
                     <input
-                        value={this.state.form.destinationPublicKey}
-                        placeholder={'Destination key'}
-                        onChange={this.setFormField('destinationPublicKey')}
+                        value={this.state.form.receiverPublicKey}
+                        placeholder={"Your Friend's Public key"}
+                        onChange={this.setFormField('receiverPublicKey')}
                         onBlur={() =>
-                            this.state.form.destinationPublicKey &&
-                            this.props.validateTransactionDestination(
-                                this.state.form.destinationPublicKey
+                            this.state.form.receiverPublicKey &&
+                            this.props.validateReceiverAccount(
+                                this.state.form.receiverPublicKey
                             )
                         }
                     />
                     <div>
-                        {this.props.validateDestinationPublicKey &&
-                            this.props.validateDestinationPublicKey.success}
-                        {this.props.validateDestinationPublicKey &&
-                            this.props.validateDestinationPublicKey.error}
+                        {this.props.isReceiverAccountValid &&
+                            this.props.isReceiverAccountValid.success}
+                        {this.props.isReceiverAccountValid &&
+                            this.props.isReceiverAccountValid.error}
+                        {this.props.isSenderAccountValid &&
+                            this.props.isSenderAccountValid.success}
+                        {this.props.isSenderAccountValid &&
+                            this.props.isSenderAccountValid.error}
                     </div>
                     <input
                         value={this.state.form.amount}
                         placeholder={'Amount'}
                         onChange={this.setFormField('amount')}
                     />
-                    {/* <button onClick={this.send}>Send</button> */}
+                    {
+                        <button
+                            onClick={() =>
+                                this.props.sendTransaction(this.state.form)
+                            }
+                        >
+                            Send
+                        </button>
+                    }
                 </div>
                 {this.state.message && <div>{this.state.message}</div>}
             </div>
@@ -91,14 +117,18 @@ class App extends React.Component<AllProps, OwnState> {
 }
 
 const mapStateToProps = (state: ReduxState): ReduxStateProps => ({
-    validateDestinationPublicKey: state.app.validateDestinationPublicKey,
+    isSenderAccountValid: state.app.isSenderAccountValid,
+    isReceiverAccountValid: state.app.isReceiverAccountValid,
+    sendTransactionStatus: state.app.sendTransactionStatus,
 });
 
 const mapDispatchToProps = (dispatch: any): ReduxDispatchProps => ({
-    validateTransactionDestination: bindActionCreators(
-        validateTransactionDestination,
+    validateSenderAccount: bindActionCreators(validateSenderAccount, dispatch),
+    validateReceiverAccount: bindActionCreators(
+        validateReceiverAccount,
         dispatch
     ),
+    sendTransaction: bindActionCreators(sendTransaction, dispatch),
 });
 
 export default connect<ReduxStateProps, ReduxDispatchProps, {}>(

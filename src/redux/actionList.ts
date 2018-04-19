@@ -1,8 +1,11 @@
 export default {
-    VALIDATE_TRANSACTION_DESTINATION: 'validateTransactionDestination',
-    VALIDATE_TRANSACTION_DESTINATION_SUCCESS:
-        'validateTransactionDestinationSuccess',
-    VALIDATE_TRANSACTION_DESTINATION_ERROR:
-        'validateTransactionDestinationError',
+    VALIDATE_SENDER_ACCOUNT: 'validateSenderAccount',
+    VALIDATE_SENDER_ACCOUNT_SUCCESS: 'validateSenderAccountSuccess',
+    VALIDATE_SENDER_ACCOUNT_ERROR: 'validateSenderAccountError',
+    VALIDATE_RECEIVER_ACCOUNT: 'validateReceiverAccount',
+    VALIDATE_RECEIVER_ACCOUNT_SUCCESS: 'validateReceiverAccountSuccess',
+    VALIDATE_RECEIVER_ACCOUNT_ERROR: 'validateReceiverAccountError',
     SEND_TRANSACTION: 'sendTransaction',
+    SEND_TRANSACTION_SUCCESS: 'sendTransactionSuccess',
+    SEND_TRANSACTION_ERROR: 'sendTransactionError',
 };
