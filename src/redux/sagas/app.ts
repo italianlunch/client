@@ -7,12 +7,9 @@ const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 
 import ACTIONS from '../actionList';
 import {
-    sendTransactionError,
-    sendTransactionSuccess,
-    validateReceiverAccountError,
-    validateReceiverAccountSuccess,
-    validateSenderAccountError,
-    validateSenderAccountSuccess,
+    setReceiverAccountValidity,
+    setSenderAccountValidity,
+    setTransactionStatus,
 } from '../actions';
 
 const validatePublicKey = async (publicKey: string): Promise<any> => {
@@ -69,10 +66,10 @@ function* validateSenderAccountSaga(action: any): any {
     'use strict';
     const payload = action.payload;
     try {
-        const response = yield call(validatePrivateKey, payload);
-        yield put(validateSenderAccountSuccess(response));
+        yield call(validatePrivateKey, payload);
+        yield put(setSenderAccountValidity('success'));
     } catch (error) {
-        yield put(validateSenderAccountError(error.message));
+        yield put(setSenderAccountValidity('error'));
     }
 }
 
@@ -80,10 +77,10 @@ function* validateReceiverAccountSaga(action: any): any {
     'use strict';
     const payload = action.payload;
     try {
-        const response = yield call(validatePublicKey, payload);
-        yield put(validateReceiverAccountSuccess(response));
+        yield call(validatePublicKey, payload);
+        yield put(setReceiverAccountValidity('success'));
     } catch (error) {
-        yield put(validateReceiverAccountError(error.message));
+        yield put(setReceiverAccountValidity('error'));
     }
 }
 
@@ -91,15 +88,15 @@ function* sendTransactionSaga(action: any): any {
     'use strict';
     const payload = action.payload;
     try {
-        const response = yield call(
+        yield call(
             sendTransaction,
             payload.senderPrivateKey,
             payload.receiverPublicKey,
             payload.amount
         );
-        yield put(sendTransactionSuccess(response));
+        yield put(setTransactionStatus('success'));
     } catch (error) {
-        yield put(sendTransactionError(error.message));
+        yield put(setTransactionStatus('error'));
     }
 }
 

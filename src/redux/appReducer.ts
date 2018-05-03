@@ -1,28 +1,18 @@
 import { Reducer } from 'redux';
 
+import { Status } from '../types';
 import ACTIONS from './actionList';
 
 interface AppState {
-    isSenderAccountValid: {
-        success: any;
-        error: any;
-    };
-
-    isReceiverAccountValid: {
-        success: any;
-        error: any;
-    };
-
-    sendTransactionStatus: {
-        success: any;
-        error: any;
-    };
+    senderAccountValid: Status;
+    receiverAccountValid: Status;
+    transactionStatus: Status;
 }
 
 const APP_INITIAL_STATE: AppState = {
-    isSenderAccountValid: null as any,
-    isReceiverAccountValid: null as any,
-    sendTransactionStatus: null as any,
+    senderAccountValid: 'inactive',
+    receiverAccountValid: 'inactive',
+    transactionStatus: 'inactive',
 };
 
 const appReducer: Reducer<AppState> = (
@@ -30,58 +20,22 @@ const appReducer: Reducer<AppState> = (
     action = { type: '', payload: null as any }
 ) => {
     switch (action.type) {
-        case ACTIONS.VALIDATE_SENDER_ACCOUNT_ERROR:
+        case ACTIONS.SET_RECEIVER_ACCOUNT_VALIDITY:
             return {
                 ...state,
-                isSenderAccountValid: {
-                    success: null,
-                    error: action.payload,
-                },
+                receiverAccountValid: action.payload,
             };
 
-        case ACTIONS.VALIDATE_SENDER_ACCOUNT_SUCCESS:
+        case ACTIONS.SET_SENDER_ACCOUNT_VALIDITY:
             return {
                 ...state,
-                isSenderAccountValid: {
-                    success: action.payload,
-                    error: null,
-                },
+                senderAccountValid: action.payload,
             };
 
-        case ACTIONS.VALIDATE_RECEIVER_ACCOUNT_ERROR:
+        case ACTIONS.SET_TRANSACTION_STATUS:
             return {
                 ...state,
-                isReceiverAccountValid: {
-                    success: null,
-                    error: action.payload,
-                },
-            };
-
-        case ACTIONS.VALIDATE_RECEIVER_ACCOUNT_SUCCESS:
-            return {
-                ...state,
-                isReceiverAccountValid: {
-                    success: action.payload,
-                    error: null,
-                },
-            };
-
-        case ACTIONS.SEND_TRANSACTION_ERROR:
-            return {
-                ...state,
-                sendTransactionStatus: {
-                    success: null,
-                    error: action.payload,
-                },
-            };
-
-        case ACTIONS.SEND_TRANSACTION_SUCCESS:
-            return {
-                ...state,
-                sendTransactionSuccess: {
-                    success: action.payload,
-                    error: null,
-                },
+                transactionStatus: action.payload,
             };
 
         default:

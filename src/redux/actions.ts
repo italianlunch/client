@@ -1,3 +1,4 @@
+import { Status } from '../types';
 import ACTIONS from './actionList';
 
 type ValidateSenderAccount = (
@@ -9,21 +10,12 @@ const validateSenderAccount: ValidateSenderAccount = payload => ({
     payload,
 });
 
-type ValidateSenderAccountSuccess = (
-    payload: any
-) => { type: string; payload: any };
+type SetSenderAccountValidity = (
+    payload: Status
+) => { type: string; payload: Status };
 
-const validateSenderAccountSuccess: ValidateSenderAccountSuccess = payload => ({
-    type: ACTIONS.VALIDATE_SENDER_ACCOUNT_SUCCESS,
-    payload,
-});
-
-type ValidateSenderAccountError = (
-    payload: any
-) => { type: string; payload: any };
-
-const validateSenderAccountError: ValidateSenderAccountError = payload => ({
-    type: ACTIONS.VALIDATE_SENDER_ACCOUNT_ERROR,
+const setSenderAccountValidity: SetSenderAccountValidity = payload => ({
+    type: ACTIONS.SET_SENDER_ACCOUNT_VALIDITY,
     payload,
 });
 
@@ -36,21 +28,12 @@ const validateReceiverAccount: ValidateReceiverAccount = payload => ({
     payload,
 });
 
-type ValidateReceiverAccountSuccess = (
-    payload: any
-) => { type: string; payload: any };
+type SetReceiverAccountValidity = (
+    payload: Status
+) => { type: string; payload: Status };
 
-const validateReceiverAccountSuccess: ValidateReceiverAccountSuccess = payload => ({
-    type: ACTIONS.VALIDATE_RECEIVER_ACCOUNT_SUCCESS,
-    payload,
-});
-
-type ValidateReceiverAccountError = (
-    payload: any
-) => { type: string; payload: any };
-
-const validateReceiverAccountError: ValidateReceiverAccountError = payload => ({
-    type: ACTIONS.VALIDATE_RECEIVER_ACCOUNT_ERROR,
+const setReceiverAccountValidity: SetReceiverAccountValidity = payload => ({
+    type: ACTIONS.SET_RECEIVER_ACCOUNT_VALIDITY,
     payload,
 });
 
@@ -74,31 +57,26 @@ const sendTransaction: SendTransaction = payload => ({
     payload,
 });
 
-type SendTransactionSuccess = (payload: any) => { type: string; payload: any };
+type SetTransactionStatus = (
+    payload: Status
+) => { type: string; payload: Status };
 
-const sendTransactionSuccess: SendTransactionSuccess = payload => ({
-    type: ACTIONS.SEND_TRANSACTION_SUCCESS,
-    payload,
-});
-
-type SendTransactionError = (payload: any) => { type: string; payload: any };
-
-const sendTransactionError: SendTransactionError = payload => ({
-    type: ACTIONS.SEND_TRANSACTION_ERROR,
+const setTransactionStatus: SetTransactionStatus = payload => ({
+    type: ACTIONS.SET_TRANSACTION_STATUS,
     payload,
 });
 
 export {
-    validateSenderAccount,
-    ValidateSenderAccount,
-    validateSenderAccountSuccess,
-    validateSenderAccountError,
-    validateReceiverAccount,
-    ValidateReceiverAccount,
-    validateReceiverAccountSuccess,
-    validateReceiverAccountError,
+    setReceiverAccountValidity,
+    SetReceiverAccountValidity,
+    setSenderAccountValidity,
+    SetSenderAccountValidity,
+    setTransactionStatus,
+    SetTransactionStatus,
     sendTransaction,
     SendTransaction,
-    sendTransactionSuccess,
-    sendTransactionError,
+    validateReceiverAccount,
+    ValidateReceiverAccount,
+    validateSenderAccount,
+    ValidateSenderAccount,
 };

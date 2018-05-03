@@ -1,11 +1,8 @@
 export default {
     VALIDATE_SENDER_ACCOUNT: 'validateSenderAccount',
-    VALIDATE_SENDER_ACCOUNT_SUCCESS: 'validateSenderAccountSuccess',
-    VALIDATE_SENDER_ACCOUNT_ERROR: 'validateSenderAccountError',
+    SET_SENDER_ACCOUNT_VALIDITY: 'setSenderAccountValidity',
     VALIDATE_RECEIVER_ACCOUNT: 'validateReceiverAccount',
-    VALIDATE_RECEIVER_ACCOUNT_SUCCESS: 'validateReceiverAccountSuccess',
-    VALIDATE_RECEIVER_ACCOUNT_ERROR: 'validateReceiverAccountError',
+    SET_RECEIVER_ACCOUNT_VALIDITY: 'setReceiverAccountValidity',
     SEND_TRANSACTION: 'sendTransaction',
-    SEND_TRANSACTION_SUCCESS: 'sendTransactionSuccess',
-    SEND_TRANSACTION_ERROR: 'sendTransactionError',
+    SET_TRANSACTION_STATUS: 'setTransactionStatus',
 };
