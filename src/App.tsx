@@ -11,6 +11,7 @@ import {
     ValidateSenderAccount,
 } from './redux/actions';
 import { ReduxState } from './redux/rootReducer';
+import { Status } from './types';
 
 interface OwnState {
     form: {
@@ -22,9 +23,9 @@ interface OwnState {
 }
 
 interface ReduxStateProps {
-    isSenderAccountValid: any;
-    isReceiverAccountValid: any;
-    sendTransactionStatus: any;
+    senderAccountValid: Status;
+    receiverAccountValid: Status;
+    transactionStatus: Status;
 }
 
 interface ReduxDispatchProps {
@@ -58,11 +59,23 @@ class App extends React.Component<AllProps, OwnState> {
         });
     };
 
+    getStatusMessage = (status: Status) => {
+        switch (status) {
+            case 'inactive':
+                return null;
+            case 'success':
+                return <div>{'Success'}</div>;
+            case 'error':
+                return <div>{'Error'}</div>;
+        }
+    };
+
     render() {
         return (
             <div>
                 <div>
                     <h1>Send ur lumens</h1>
+                    {this.getStatusMessage(this.props.senderAccountValid)}
                     <input
                         value={this.state.form.senderPrivateKey}
                         placeholder={'Your Private Key'}
@@ -74,6 +87,7 @@ class App extends React.Component<AllProps, OwnState> {
                             )
                         }
                     />
+                    {this.getStatusMessage(this.props.receiverAccountValid)}
                     <input
                         value={this.state.form.receiverPublicKey}
                         placeholder={"Your Friend's Public key"}
@@ -85,21 +99,12 @@ class App extends React.Component<AllProps, OwnState> {
                             )
                         }
                     />
-                    <div>
-                        {this.props.isReceiverAccountValid &&
-                            this.props.isReceiverAccountValid.success}
-                        {this.props.isReceiverAccountValid &&
-                            this.props.isReceiverAccountValid.error}
-                        {this.props.isSenderAccountValid &&
-                            this.props.isSenderAccountValid.success}
-                        {this.props.isSenderAccountValid &&
-                            this.props.isSenderAccountValid.error}
-                    </div>
                     <input
                         value={this.state.form.amount}
                         placeholder={'Amount'}
                         onChange={this.setFormField('amount')}
                     />
+                    {this.getStatusMessage(this.props.transactionStatus)}
                     {
                         <button
                             onClick={() =>
@@ -117,9 +122,9 @@ class App extends React.Component<AllProps, OwnState> {
 }
 
 const mapStateToProps = (state: ReduxState): ReduxStateProps => ({
-    isSenderAccountValid: state.app.isSenderAccountValid,
-    isReceiverAccountValid: state.app.isReceiverAccountValid,
-    sendTransactionStatus: state.app.sendTransactionStatus,
+    senderAccountValid: state.app.senderAccountValid,
+    receiverAccountValid: state.app.receiverAccountValid,
+    transactionStatus: state.app.transactionStatus,
 });
 
 const mapDispatchToProps = (dispatch: any): ReduxDispatchProps => ({
